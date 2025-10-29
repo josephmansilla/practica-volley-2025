@@ -111,24 +111,29 @@ class EnJuego inherits FaseJuego {
 
 class Terminado inherits FaseJuego {
     override method equipoConVentajaSiHayEmpate() {
-        self.error("Partido terminado - No hay empate")
+        throw new PartidoTerminadoException()
     }
     override method anoto(equipo, partido) {
-        self.error("Partido terminado - No se puede anotar")
+        throw new PartidoTerminadoException()
     }
     override method equipoConVentaja(partido) {
         partido.puntaje().max{ equipoPuntaje => equipoPuntaje.puntaje() }
     }
 }
 
+
 class PorElSaque inherits FaseJuego {
     override method equipoConVentajaSiHayEmpate() {
-        self.error("Por el saque - Deben jugar el saque primero")
+        throw new JueganPorElSaqueException()
     }
     override method anoto(equipo, partido) {
         partido.fase(new EnJuego(equipoQueEstaSacando = equipo))
     }
     override method equipoConVentaja(partido) {
-        self.error("Por el saque - Ningún equipo con ventaja")
+        throw new JueganPorElSaqueException()
     }
 }
+
+
+class JueganPorElSaqueException inherits Exception {}
+class PartidoTerminadoException inherits Exception {}
