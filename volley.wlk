@@ -90,6 +90,19 @@ class EnJuego inherits FaseJuego {
     }
     override method equipoConVentaja(partido) {
 
+        const equipoA = partido.puntaje().head()
+        const equipoB = partido.puntaje().last()
+        const criterio = {j => j.puedeRematar()}
+
+        if(equipoA.puntaje() > equipoB.puntaje() ||
+        equipoA.alturaPromedio(criterio) > equipoB.alturaPromedio(criterio)){
+            return equipoA.equipo()
+        }
+        if(equipoA.puntaje() < equipoB.puntaje() ||
+        equipoA.alturaPromedio(criterio) < equipoB.alturaPromedio(criterio)){
+            return equipoB.equipo()
+        }
+        return equipoQueEstaSacando
     }
     method sumarPunto(equipo, partido) {
         partido.puntaje().find { equipoPuntaje => equipoPuntaje.equipo() == equipo}.sumarPunto()
