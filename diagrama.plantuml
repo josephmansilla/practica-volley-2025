@@ -1,0 +1,110 @@
+@startuml volley
+
+class Partido {
+  - estado: Fase
+  - equiposPartido: List<PuntosPorEquipo>
+  + equipoConVentaja(): Equipo
+}
+
+class PuntosPorEquipo {
+  - equipo: Equipo
+  - puntaje: Integer
+  + sumarPunto(): Integer
+}
+
+class Fase {
+  + equipoConVentaja(partido: Partido): Equipo
+  + equipoConVentajaSiHayEmpate(): Equipo
+  + anoto(equipo, partido): Void
+}
+class FasePorElSaque {
+  + equipoConVentaja(partido: Partido): Equipo
+  + equipoConVentajaSiHayEmpate(): Equipo
+  + anoto(equipo, partido): Void
+}
+
+class FaseEnJuego {
+  - equipoQueEstaSacando: Equipo
+  + equipoConVentaja(partido: Partido): Equipo
+  + equipoConVentajaSiHayEmpate(): Equipo
+  + anoto(equipo: Equipo, partido: Partido): Void  
+
+}
+
+class FaseTerminado {
+  + equipoConVentaja(partido: Partido): Equipo
+  + equipoConVentajaSiHayEmpate(): Equipo
+  + anoto(equipo: Equipo, partido: Partido): Void  
+}
+
+class Equipo {
+  - jugadores: List<Jugador>
+  + promedioAltura(): Integer
+  + rotarEquipo(): Void
+}
+
+
+class Jugador {
+  - Altura: Float
+  - PosicionActual: Posicion
+  + puedeRematar(): Boolean
+  + cumpleAlturaMinima(): Boolean
+  + validarRemate(): Boolean
+  + cambiarPosicion(): Void
+}
+
+abstract Posicion {
+  - numero: Integer
+  + siguientePosicion(): Posicion
+  + puedeRematar(): Boolean
+}
+
+abstract Delantero {
+  + puedeRematar(): Boolean
+}
+abstract Zaguero {
+  + puedeRematar(): Boolean
+}
+
+class ZagueroCentral {
+  + siguientePosicion(): Posicion
+}
+
+class ZagueroIzquierdo {
+  + siguientePosicion(): Posicion
+}
+
+class ZagueroDerecho {
+  + siguientePosicion(): Posicion
+}
+
+class DelanteroCentro {
+  + siguientePosicion(): Posicion
+}
+class DelanteroIzquierdo {
+  + siguientePosicion(): Posicion
+}
+
+class DelanteroDerecho {
+  + siguientePosicion(): Posicion
+}
+
+Equipo <- PuntosPorEquipo
+PuntosPorEquipo <- Partido: *
+Partido -> Fase
+Fase <|-- FasePorElSaque
+Fase <|-- FaseEnJuego
+Fase <|-- FaseTerminado
+FaseEnJuego -> Equipo
+Jugador <- Equipo: *
+Posicion <- Jugador
+Posicion <|-- Delantero
+Posicion <|-- Zaguero
+Zaguero <|-- ZagueroIzquierdo
+Zaguero <|-- ZagueroDerecho
+Zaguero <|-- ZagueroCentral
+Delantero <|-- DelanteroCentro
+Delantero <|-- DelanteroDerecho
+Delantero <|-- DelanteroIzquierdo
+
+@enduml
